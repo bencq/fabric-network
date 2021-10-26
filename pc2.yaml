@@ -6,7 +6,6 @@ networks:
       name: basic-network
 
 services:
-
   ca-org2:
     image: hyperledger/fabric-ca
     environment:
@@ -63,14 +62,13 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
       - CORE_METRICS_PROVIDER=prometheus
-      # - CORE_OPERATIONS_LISTENADDRESS=0.0.0.0:9440
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/crypto/peer/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/crypto/peer/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/crypto/peer/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/crypto/peer/msp
-    # depends_on:
-    #   - couchdb2
+    depends_on:
+      - couchdb2
     ports:
       - 9051:9051
     volumes:
