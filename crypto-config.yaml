@@ -15,14 +15,14 @@ OrdererOrgs:
         SANS:
             - "localhost"
             - "127.0.0.1"
-      - Hostname: orderer2
-        SANS:
-          - "localhost"
-          - "127.0.0.1"
-      - Hostname: orderer3
-        SANS:
-            - "localhost"
-            - "127.0.0.1"
+      # - Hostname: orderer2
+      #   SANS:
+      #     - "localhost"
+      #     - "127.0.0.1"
+      # - Hostname: orderer3
+      #   SANS:
+      #       - "localhost"
+      #       - "127.0.0.1"
 
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
@@ -36,7 +36,7 @@ PeerOrgs:
     EnableNodeOUs: true
 
     Template:
-      Count: 2
+      Count: 1
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
       SANS:
@@ -50,7 +50,35 @@ PeerOrgs:
     EnableNodeOUs: true
 
     Template:
-      Count: 2
+      Count: 1
+      # Start: 5
+      # Hostname: {{.Prefix}}{{.Index}} # default
+      SANS:
+        - "localhost"
+
+    Users:
+      Count: 1
+
+  - Name: Org3
+    Domain: org3.example.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
+      # Start: 5
+      # Hostname: {{.Prefix}}{{.Index}} # default
+      SANS:
+        - "localhost"
+
+    Users:
+      Count: 1
+
+  - Name: Org4
+    Domain: org4.example.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 1
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
       SANS:
