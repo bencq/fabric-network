@@ -2,6 +2,8 @@ version: '2'
 
 networks:
   test:
+    external:
+      name: basic-network
 
 services:
 
