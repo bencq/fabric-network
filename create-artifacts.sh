@@ -1,3 +1,5 @@
+. ./common.sh
+
 export PATH=${PWD}/bin:${PWD}:$PATH
 
 chmod -R 0755 ./crypto-config
@@ -14,7 +16,7 @@ SYS_CHANNEL="sys-channel"
 # channel name defaults to "mychannel"
 CHANNEL_NAME="mychannel"
 
-echo $CHANNEL_NAME
+echo "CHANNEL_NAME:$CHANNEL_NAME"
 
 # Generate System Genesis block
 configtxgen -profile OrdererGenesis -configPath . -channelID $SYS_CHANNEL  -outputBlock ./channel-artifacts/genesis.block
@@ -28,3 +30,9 @@ configtxgen -profile BasicChannel -configPath . -outputAnchorPeersUpdate ./chann
 
 echo "#######    Generating anchor peer update for Org2MSP  ##########"
 configtxgen -profile BasicChannel -configPath . -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
+
+echo "#######    Generating anchor peer update for Org3MSP  ##########"
+configtxgen -profile BasicChannel -configPath . -outputAnchorPeersUpdate ./channel-artifacts/Org3MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org3MSP
+
+echo "#######    Generating anchor peer update for Org4MSP  ##########"
+configtxgen -profile BasicChannel -configPath . -outputAnchorPeersUpdate ./channel-artifacts/Org4MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org4MSP
