@@ -14,20 +14,19 @@ class PutState extends Contract {
         // console.info('============= END : Initialize Ledger ===========');
     }
 
-    async query(ctx) {
+    async query(ctx, key) {
         // console.info('============= END : Query ===========');
-        let ts = new Date().getTime().toString();
-        const stateBuffer = await ctx.stub.getState(ts);
-        // if (!stateBuffer || stateBuffer.length === 0) {
-            
-        // } else {
-            
-        // }
+        const stateBuffer = await ctx.stub.getState(key);
+        if (!stateBuffer || stateBuffer.length === 0) {
+            return "";
+        } else {
+            return stateBuffer.toString();
+        }
     }
 
-    async create(ctx) {
-        let ts = new Date().getTime().toString();
-        ctx.stub.putState(ts, Buffer.from(ts));
+    async create(ctx, key) {
+        
+        await ctx.stub.putState(key, Buffer.from(key));
         // console.info('============= END : Create ===========');
     }
 
