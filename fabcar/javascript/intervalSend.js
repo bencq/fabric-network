@@ -10,6 +10,7 @@ const { Gateway, Wallets } = require('fabric-network');
 const protobuf = require('protobufjs');
 const fs = require('fs');
 const path = require('path');
+const {txCnt, intervalCnt, intervalMs} = require('./config');
 
 const AwesomeMessage =
 new protobuf.Type("BlockchainInfo")
@@ -20,7 +21,7 @@ new protobuf.Type("BlockchainInfo")
 async function main() {
     try {
         // load the network configuration
-        const ccpPath = path.resolve(__dirname, '..', '..', 'crypto-config', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+        
         let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
         // Create a new file system based wallet for managing identities.
@@ -45,16 +46,13 @@ async function main() {
         const network = await gateway.getNetwork(channelName);
 
         // Get the contract from the network.
-        const contract = network.getContract('empty');
+        const contract = network.getContract('putstate');
         const contractQscc = network.getContract('qscc');
 
         // Submit the specified transaction.
         // createCar transaction - requires 5 argument, ex: ('createCar', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
         // changeCarOwner transaction - requires 2 args , ex: ('changeCarOwner', 'CAR12', 'Dave')
         
-        const txCnt = 3000;
-        const intervalCnt = 300;
-        const intervalMs = 1000;
         let txInd = 0;
 
 
@@ -70,7 +68,7 @@ async function main() {
                     let mInd = txInd;
 
                     let tsSend = new Date();
-                    await contract.submitTransaction('query');
+                    await contract.submitTransaction('create', mInd.toString());
                     let tsRecv = new Date();
                     arr_Ts[mInd] = [tsSend.getTime(), tsRecv.getTime()];
                     

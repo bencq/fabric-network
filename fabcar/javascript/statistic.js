@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const {txCnt, intervalCnt, intervalMs} = require('./config');
 
 let arr_Ts = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'rec', 'arr_Ts.json')));
 let {stBlockNumber, edBlockNumber} = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'rec', 'blockNumber.json')));
 
 
-const txCnt = arr_Ts.length;
 let delayMses = new Array(txCnt);
 let minTs = Infinity;
 let maxTs = -Infinity;
@@ -28,6 +28,9 @@ let avgTxCntPerBlock = txCnt / (edBlockNumber - stBlockNumber);
 
 let object_writeOut = {
     txCnt: txCnt,
+    intervalCnt: intervalCnt,
+    intervalMs: intervalMs,
+    
     totTimeSpent: totTimeSpent,
     tps: tps,
 
@@ -39,6 +42,7 @@ let object_writeOut = {
     edBlockNumber: edBlockNumber,
 
     avgTxCntPerBlock: avgTxCntPerBlock,
+    
     
 
 }

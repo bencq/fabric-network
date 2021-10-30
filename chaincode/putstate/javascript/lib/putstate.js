@@ -26,7 +26,7 @@ class PutState extends Contract {
 
     async create(ctx, key) {
         
-        ctx.stub.putState(key, Buffer.from(key));
+        await ctx.stub.putState(key, Buffer.from(key));
         // console.info('============= END : Create ===========');
     }
 
