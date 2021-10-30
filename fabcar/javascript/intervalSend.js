@@ -11,6 +11,7 @@ const protobuf = require('protobufjs');
 const fs = require('fs');
 const path = require('path');
 const {txCnt, intervalCnt, intervalMs} = require('./config');
+const { ccpPath } = require('./common');
 
 const AwesomeMessage =
 new protobuf.Type("BlockchainInfo")
@@ -46,7 +47,7 @@ async function main() {
         const network = await gateway.getNetwork(channelName);
 
         // Get the contract from the network.
-        const contract = network.getContract('putstate');
+        const contract = network.getContract('empty');
         const contractQscc = network.getContract('qscc');
 
         // Submit the specified transaction.
@@ -68,7 +69,8 @@ async function main() {
                     let mInd = txInd;
 
                     let tsSend = new Date();
-                    await contract.submitTransaction('create', mInd.toString());
+                    await contract.submitTransaction('create');
+                    // await contract.submitTransaction('create', mInd.toString());
                     let tsRecv = new Date();
                     arr_Ts[mInd] = [tsSend.getTime(), tsRecv.getTime()];
                     

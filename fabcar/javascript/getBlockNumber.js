@@ -11,7 +11,7 @@ const protobuf = require('protobufjs')
 // const { BlockDecoder } = require('fabric-common')
 const path = require('path');
 const fs = require('fs');
-
+const { ccpPath } = require('./common');
 
 async function main() {
     try {

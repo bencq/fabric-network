@@ -9,7 +9,7 @@
 const { Gateway, Wallets } = require('fabric-network');
 const path = require('path');
 const fs = require('fs');
-
+const { ccpPath } = require('./common');
 
 async function main() {
     try {

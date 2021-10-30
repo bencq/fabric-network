@@ -8,7 +8,9 @@
 		],
 		"peers": [
 		  "peer0.org1.example.com",
-		  "peer0.org2.example.com"
+		  "peer0.org2.example.com",
+		  "peer0.org3.example.com",
+		  "peer0.org4.example.com"
 		]
 	  }
 	},
@@ -29,6 +31,24 @@
 		],
 		"certificateAuthorities": [
 		  "ca-org2"
+		]
+	  },
+	  "Org3": {
+		"mspid": "Org3MSP",
+		"peers": [
+		  "peer0.org3.example.com"
+		],
+		"certificateAuthorities": [
+		  "ca-org3"
+		]
+	  },
+	  "Org4": {
+		"mspid": "Org4MSP",
+		"peers": [
+		  "peer0.org4.example.com"
+		],
+		"certificateAuthorities": [
+		  "ca-org4"
 		]
 	  }
 	},
@@ -60,6 +80,24 @@
 		},
 		"tlsCACerts": {
 			"path": "/home/ubuntu/fabric/fabric-network/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem"
+		}
+	  },
+	  "peer0.org3.example.com": {
+		"url": "grpcs://peer0.org3.example.com:11051",
+		"grpcOptions": {
+		  "ssl-target-name-override": "peer0.org3.example.com"
+		},
+		"tlsCACerts": {
+			"path": "/home/ubuntu/fabric/fabric-network/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/tlscacerts/tlsca.org3.example.com-cert.pem"
+		}
+	  },
+	  "peer0.org4.example.com": {
+		"url": "grpcs://peer0.org4.example.com:13051",
+		"grpcOptions": {
+		  "ssl-target-name-override": "peer0.org4.example.com"
+		},
+		"tlsCACerts": {
+			"path": "/home/ubuntu/fabric/fabric-network/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/msp/tlscacerts/tlsca.org4.example.com-cert.pem"
 		}
 	  }
 	},

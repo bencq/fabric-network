@@ -7,7 +7,7 @@ export PRIVATE_DATA_CONFIG=${PWD}/private-data/collections_config.json
 
 
 CHANNEL_NAME="mychannel"
-CC_NAME="fabcar"
+CC_NAME="empty"
 
 
 setGlobalsForPeer0Org1
@@ -21,4 +21,4 @@ peer chaincode invoke -o localhost:7050 \
     --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
     --peerAddresses peer0.org3.example.com:11051 --tlsRootCertFiles $PEER0_ORG3_CA \
     --peerAddresses peer0.org4.example.com:13051 --tlsRootCertFiles $PEER0_ORG4_CA \
-    -c '{"function": "createCar","Args":["Car-ABCDEEE", "Audi", "R8", "Red", "Kannan"]}'
+    -c '{"function": "create","Args":[]}'

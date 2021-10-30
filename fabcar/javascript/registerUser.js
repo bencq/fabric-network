@@ -10,6 +10,7 @@ const { Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
 const fs = require('fs');
 const path = require('path');
+const { ccpPath } = require('./common');
 
 async function main() {
     try {
