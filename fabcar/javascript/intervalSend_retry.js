@@ -10,7 +10,9 @@ const { Gateway, Wallets } = require('fabric-network');
 const protobuf = require('protobufjs');
 const fs = require('fs');
 const path = require('path');
-const {txCnt, intervalCnt, intervalMs} = require('./config');
+const {txCnt, intervalCnt, intervalMs, fixedCnt} = require('./config');
+const maxRetry = 2;
+const retryDelay = 1000;
 const { ccpPath } = require('./common');
 
 const AwesomeMessage =
@@ -18,6 +20,13 @@ new protobuf.Type("BlockchainInfo")
     .add(new protobuf.Field("height", 1, "uint32"))
     .add(new protobuf.Field("currentBlockHash", 2, "bytes"))
     .add(new protobuf.Field("previousBlockHash", 3, "bytes"));
+
+function rejectDelay(reason) {
+    return new Promise(function(resolve, reject) {
+        console.log('t')
+        setTimeout(reject.bind(reason, null), retryDelay); 
+    });
+}
 
 async function main() {
     try {
@@ -57,7 +66,7 @@ async function main() {
         let txInd = 0;
 
 
-        let arr_Ts = new Array(txCnt);
+        let arr_Ts = [];
 
         let recvCnt = 0;
 
@@ -70,14 +79,21 @@ async function main() {
 
                     let tsSend = new Date();
                     // await contract.submitTransaction('create');
-                    await contract.submitTransaction('create', mInd.toString());
+
+                    var p = contract.submitTransaction('create', mInd.toString());
+                    // for(let rInd = 0; rInd < maxRetry; rInd++)
+                    // {
+                    //     p = p.catch(rejectDelay);
+                    // }
+                    p = p.then((ret)=>
+                    {
+                        let tsRecv = new Date();
+                        arr_Ts.push([tsSend.getTime(), tsRecv.getTime()]);
+                        resolve([mInd]);
+                    }).catch(()=>{console.log('err');});
 
                     
-                    let tsRecv = new Date();
-                    arr_Ts[mInd] = [tsSend.getTime(), tsRecv.getTime()];
                     
-                    
-                    resolve([mInd]);
 
                 }).then(async ([index])=>{
                     if(index % 100 == 0)
@@ -87,8 +103,7 @@ async function main() {
                     recvCnt++;
                     if(recvCnt >= txCnt)
                     {
-                        
-
+                        clearInterval(intervalID);
                         {
                             const result = await contractQscc.evaluateTransaction('GetChainInfo', channelName);                                                        
                             let message = AwesomeMessage.decode(result);
@@ -108,10 +123,8 @@ async function main() {
                 });
                 txInd++;
             }
-            if(txInd >= txCnt)
-            {
-                clearInterval(intervalID);
-            }
+
+                
         }
         
         var stBlockNumber = -1;
@@ -120,8 +133,11 @@ async function main() {
             let message = AwesomeMessage.decode(result);
             stBlockNumber = message.height;
         }
-        var intervalID = setInterval(()=>{sendTx(intervalCnt)}, intervalMs);
-
+        var intervalID = setInterval(()=>{
+            let restTxCnt = txCnt - recvCnt;
+            let txCnt2Send = Math.min(restTxCnt, intervalCnt);
+            sendTx(txCnt2Send);
+        }, intervalMs);
         // console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.

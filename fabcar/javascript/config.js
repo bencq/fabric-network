@@ -1,9 +1,11 @@
-const intervalCnt = 200;
+const intervalCnt = 160;
 const intervalMs = 1000;
-const txCnt = intervalCnt * 60;
+const txCnt = 1000000;
+const fixedCnt = 2000;
 
 module.exports = {
     txCnt: txCnt,
     intervalCnt: intervalCnt,
-    intervalMs: intervalMs
+    intervalMs: intervalMs,
+    fixedCnt: fixedCnt,
 }

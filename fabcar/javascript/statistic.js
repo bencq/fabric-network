@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const {txCnt, intervalCnt, intervalMs} = require('./config');
+const {txCnt, intervalCnt, intervalMs, fixedCnt} = require('./config');
 
 let arr_Ts = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'rec', 'arr_Ts.json')));
 let {stBlockNumber, edBlockNumber} = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'rec', 'blockNumber.json')));
@@ -30,6 +30,7 @@ let object_writeOut = {
     txCnt: txCnt,
     intervalCnt: intervalCnt,
     intervalMs: intervalMs,
+    fixedCnt: fixedCnt,
     
     totTimeSpent: totTimeSpent,
     tps: tps,

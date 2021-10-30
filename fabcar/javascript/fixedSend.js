@@ -10,7 +10,7 @@ const { Gateway, Wallets } = require('fabric-network');
 const protobuf = require('protobufjs');
 const fs = require('fs');
 const path = require('path');
-const {txCnt, intervalCnt, intervalMs} = require('./config');
+const { txCnt, intervalCnt, intervalMs, fixedCnt } = require('./config');
 const { ccpPath } = require('./common');
 
 const AwesomeMessage =
@@ -61,6 +61,7 @@ async function main() {
 
         let recvCnt = 0;
 
+
         const sendTx = async (txCnt2Send) => {
             for(let ind = 0; ind < txCnt2Send; ind++)
             {
@@ -71,8 +72,6 @@ async function main() {
                     let tsSend = new Date();
                     // await contract.submitTransaction('create');
                     await contract.submitTransaction('create', mInd.toString());
-
-                    
                     let tsRecv = new Date();
                     arr_Ts[mInd] = [tsSend.getTime(), tsRecv.getTime()];
                     
@@ -120,7 +119,13 @@ async function main() {
             let message = AwesomeMessage.decode(result);
             stBlockNumber = message.height;
         }
-        var intervalID = setInterval(()=>{sendTx(intervalCnt)}, intervalMs);
+        var intervalID = setInterval(()=>{
+            let restTxCnt = txCnt - txInd;
+            let freeTxCnt = fixedCnt - (txInd - recvCnt);
+            let txCnt2Send = Math.min(restTxCnt, freeTxCnt);
+            
+            sendTx(txCnt2Send);
+        }, intervalMs);
 
         // console.log('Transaction has been submitted');
 
