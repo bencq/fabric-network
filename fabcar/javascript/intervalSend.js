@@ -69,8 +69,8 @@ async function main() {
                     let mInd = txInd;
 
                     let tsSend = new Date();
-                    // await contract.submitTransaction('create');
-                    await contract.submitTransaction('create', mInd.toString());
+                    // await contract.submitTransaction('query');
+                    await contract.submitTransaction('query', mInd.toString());
 
                     
                     let tsRecv = new Date();
@@ -120,7 +120,11 @@ async function main() {
             let message = AwesomeMessage.decode(result);
             stBlockNumber = message.height;
         }
-        var intervalID = setInterval(()=>{sendTx(intervalCnt)}, intervalMs);
+        var intervalID = setInterval(()=>{
+            let restTxCnt = txCnt - txInd;
+            let txCnt2Send = Math.min(restTxCnt, intervalCnt);
+            sendTx(txCnt2Send);
+        }, intervalMs);
 
         // console.log('Transaction has been submitted');
 
